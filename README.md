@@ -37,14 +37,14 @@ API Hook that takes a lead, inserts it into SalesForce, then MailGun, then Appen
   - click on button to browse for the GoogleDriveAPIHook.zip archive file 
   - make sure select the migrations.properties file 
   - click Okay to start the importation of the hook.
-- this will create a "Google Drive Hook" Organisation with the requisite artefacts needed to run the API.
+- this will create a "Google Drive API Hook" Organisation with the requisite artefacts needed to run the API.
 - Create a leads.txt file in the "/sm70/instances/nd "directory
 
 #### Verify Import
 - Expand the services folder in the Google Sheets API Hook you imported and find TrialLeads_API_Google VS
 
 #### Activate Anonymous Contract
-- Expand the contracts folder in the Google Sheets API Hook you imported and find the "Anonymous" contract under the "Provided Contracts" folder
+- Expand the contracts folder in the Google Drive API Hook you imported and find the "Anonymous" contract under the "Provided Contracts" folder
 - click on the "Activate Contract" workflow activity in the righ-hand Activities portlet
 - ensure that the status changes to "Workflow Is Completed"
 
