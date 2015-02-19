@@ -4,57 +4,6 @@ version: 1.0
 baseUri: https://soa.com
 schemas:
   -
-    input: |
-      {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "id": "http://jsonschema.net",
-        "type": "object",
-        "properties": {
-          "FirstName": {
-            "id": "http://jsonschema.net/FirstName",
-            "type": "string"
-          },
-          "LastName": {
-            "id": "http://jsonschema.net/LastName",
-            "type": "string"
-          },
-          "Company": {
-            "id": "http://jsonschema.net/Company",
-            "type": "string"
-          },
-          "Street": {
-            "id": "http://jsonschema.net/Street",
-            "type": "string"
-          },
-          "City": {
-            "id": "http://jsonschema.net/City",
-            "type": "string"
-          },
-          "State": {
-            "id": "http://jsonschema.net/State",
-            "type": "string"
-          },
-          "PostalCode": {
-            "id": "http://jsonschema.net/PostalCode",
-            "type": "string"
-          },
-          "Email": {
-            "id": "http://jsonschema.net/Email",
-            "type": "string"
-          }
-        },
-        "required": [
-          "FirstName",
-          "LastName",
-          "Company",
-          "Street",
-          "City",
-          "State",
-          "PostalCode",
-          "Email"
-        ]
-      }
-  -
     success: |
       {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -75,7 +24,6 @@ schemas:
     description: <<put a file with the contents of the JSON inputted onto Google Drive>>
     body:
       application/json:
-        schema: input
     responses:
       200:
         body:

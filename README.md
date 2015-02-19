@@ -1,5 +1,5 @@
 # Google-Drive-API-Hook
-API Hook that takes a lead, as a JSON object, and inserts it to a new file created in a folder called "Leads" in Google Drive
+API Hook that takes a string and inserts it to a new file created in a folder called "Leads" in Google Drive
 ## Google Drive API 
 ### About the API
 - Access, edit, and save your Google App's files to Google Drive.
@@ -47,13 +47,13 @@ API Hook that takes a lead, as a JSON object, and inserts it to a new file creat
 
 
 #### Verify Connectivity
-- Using curl -H "Content-Type: application/json" -d '{"FirstName":"Paul","LastName":"Pogo40","Company":"SOA","Street":"2962 Rosemary LN NE","City":"Rochester","State":"MN","PostalCode":"55906","Email":"paul40@soa.com"}' http://Win7-64-vm:9905/google_drive/file (Make sure you use a unique value for both the Email and LastName values)
+- Using  curl -X PUT  -H "Content-Type: application/json" -d '"hello world"' http://Win7-64-vm:9905/google_drive/file
 - The correct response should be:
     {"status":"Success"}
 - Log in to your Google Apps for Work Account [Google Drive] (https://drive.google.com/drive/#my-drive)
 - ensure that there is a "Lead" folder.
 - open the "Lead" folder and ensure there is a "leads.txt" file
-- Open that file, wait for the preview to generate the contents, and ensure that your lead posted in the curl request is in the file.
+- Open that file, wait for the preview to generate the contents, and ensure that your string (in this case "hello world") posted in the curl request is in the file.
 
 ### Modify and Build
 In the event you need to change the API Hook.   Here are the instructions to do so. 
