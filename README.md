@@ -37,13 +37,17 @@ API Hook that takes a string and inserts it to a new file created in a folder ca
 
 #### Configure Security
 - Go to Google Drive Hook -> Policies -> Operational Policies -> Insert JWT into Downstream request policy
-- Click "modify" in the XML Policy Tab. An XML Policy Content editor dialog will be displayed.
-- change the value of the tns:fileLocation element to be the location and name of the file containing the private key of the Service account (this is obtain by exporting the key for the App in the [Google Developers Console] (https://console.developers.google.com/)). Note that the location must be absolute, not relative.
-- change the value of the tns:serviceAccountEmail element to be the email address of the Service account (this is obtain by exporting the key for the App in the [Google Developers Console] (https://console.developers.google.com/).
-- change the value of the tns:userAccountEmail element to be the email address of the person who's spreadsheets the API is going to use (this must be a user in the Google Apps for work domain that the administrator has created).
-- save the changes
-- click on the "Activate Policy" workflow activity in the righ-hand Activities portlet
-- ensure that the status changes to "State: Active"
+    - Click "modify" in the XML Policy Tab. An XML Policy Content editor dialog will be displayed.
+    - change the value of the tns:fileLocation element to be the location and name of the file containing the private key of the Service account (this is obtain by exporting the key for the App in the [Google Developers Console] (https://console.developers.google.com/)). Note that the location must be absolute, not relative.
+    - change the value of the tns:serviceAccountEmail element to be the email address of the Service account (this is obtain by exporting the key for the App in the [Google Developers Console] (https://console.developers.google.com/).
+    - change the value of the tns:userAccountEmail element to be the email address of the person who's spreadsheets the API is going to use (this must be a user in the Google Apps for work domain that the administrator has created).
+    - save the changes
+    - click on the "Activate Policy" workflow activity in the righ-hand Activities portlet
+    - ensure that the status changes to "State: Active"
+- Unzip the com.soa.pso.policy.JWTToken_1.0.0.zip file into the /sm70 directory of you ND installation(s). For Each ND:
+    - restart your ND
+    - loging to the ND Admin console
+    - select the "Insert JWT as HTTP Header Policy Handler" Policy in the "Avaialble Features" tab and follow the Wizard installation instructions
 
 
 #### Verify Connectivity
