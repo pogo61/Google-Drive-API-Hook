@@ -7,7 +7,7 @@ API Hook that takes a string and inserts it to a new file created in a folder ca
 
 ### Pre-Reqs
 - you must install the pso extensions custom polices:
-    + unzip the com.soa.pso.policy.restmsg_7.1.3.jar into the <Policy Manager Home>/sm70 directory. This will result in files placed in the sm70/lib/pso.opeapi.extensions_7.2.2 subdirectory
+    + unzip the com.soa.pso.openapi.extensions_7.2.2.zip (available in this repository) into the <Policy Manager Home>/sm70 directory. This will result in files placed in the sm70/lib/pso.opeapi.extensions_7.2.2 subdirectory
     + restart both PM and ND(s)
     + Using the SOA Admin Console, install the following features in each PM container:
         * SOA Professional Services OpenAPI Extensions
@@ -22,7 +22,7 @@ API Hook that takes a string and inserts it to a new file created in a folder ca
         * follow the install wizard instructions and restart the ND
 - This will only work for [Google Apps for work] (https://www.google.com/intx/en_au/work/apps/business/?utm_source=google&utm_medium=cpc&utm_campaign=japac-smb-apps-bkws-au-en&utm_content=gafb&utm_term=google%20apps&gclid=CPGWm82o5cMCFU06vAod9kcAOA&gclsrc=ds). You, or your organisation, must have a subscription to this service. The reason for this is that this is the only service that Google provides 2-legged OAuth to (via a service account). Google uses only 3-legged OAuth with its free and open Google Docs. 3-legged OAuth is unsuitable to server to server integration.
 - Register the application in the [Google Developers Console] (https://console.developers.google.com/). Creating an account if you have not already registered.
-- once the App is defined, double click on it to be taken the the App details page. 
+- once the Project is defined, double click on it to be taken the the Project details page. 
 - Click on the "Credentials" left hand menu item
 - When the Credentials Portlet is displaid, click on the "Create new Client ID" button. then select the "Service Acccount" for the CLient ID type. (note: you must be the Google Apps sdministrator to do this).
 - once this is done you should have a new section in the Credentials Portlet for the Service Account.
@@ -42,7 +42,7 @@ API Hook that takes a string and inserts it to a new file created in a folder ca
 - this will create a "Google Drive API Hook" Organisation with the requisite artefacts needed to run the API.
 
 #### Verify Import
-- Expand the services folder in the Google Sheets API Hook you imported and find Google_Drive_Hook VS
+- Expand the services folder in the Google Sheets API Hook you imported and find Google_Drive_API_Hook VS
 
 #### Activate Anonymous Contract
 - Expand the contracts folder in the Google Drive API Hook you imported and find the "Anonymous" contract under the "Provided Contracts" folder
@@ -50,7 +50,7 @@ API Hook that takes a string and inserts it to a new file created in a folder ca
 - ensure that the status changes to "Workflow Is Completed"
 
 #### Configure Security
-- Go to Google Drive Hook -> Policies -> Operational Policies -> Insert JWT into Downstream request policy
+- Go to Google Drive API Hook -> Policies -> Operational Policies -> Insert JWT into Downstream request policy
     - Click "modify" in the XML Policy Tab. An XML Policy Content editor dialog will be displayed.
     - change the value of the tns:fileLocation element to be the location and name of the file containing the private key of the Service account (this is obtain by exporting the key for the App in the [Google Developers Console] (https://console.developers.google.com/)). Note that the location must be absolute, not relative.
     - change the value of the tns:serviceAccountEmail element to be the email address of the Service account (this is obtain by exporting the key for the App in the [Google Developers Console] (https://console.developers.google.com/).
@@ -58,20 +58,495 @@ API Hook that takes a string and inserts it to a new file created in a folder ca
     - save the changes
     - click on the "Activate Policy" workflow activity in the righ-hand Activities portlet
     - ensure that the status changes to "State: Active"
-- Unzip the com.soa.pso.policy.JWTToken_1.0.0.zip file into the /sm70 directory of you ND installation(s). For Each ND:
-    - restart your ND
-    - loging to the ND Admin console
-    - select the "Insert JWT as HTTP Header Policy Handler" Policy in the "Avaialble Features" tab and follow the Wizard installation instructions
+- Go to Google Sheets API Hook -> Policies -> Operational Policies ->    GetAuthToken policy
+    - click on the "Activate Policy" workflow activity in the righ-hand Activities portlet
+    - ensure that the status changes to "State: Active"
 
 
 #### Verify Connectivity
-- Using  curl -X PUT  -H "Content-Type: application/json" -d '"hello world"' http://Win7-64-vm:9905/google_drive/file
-- The correct response should be:
-    {"status":"Success"}
-- Log in to your Google Apps for Work Account [Google Drive] (https://drive.google.com/drive/#my-drive)
-- ensure that there is a "Lead" folder.
-- open the "Lead" folder and ensure there is a "leads.txt" file
-- Open that file, wait for the preview to generate the contents, and ensure that your string (in this case "hello world") posted in the curl request is in the file.
+- Using  curl http://<ND host URL>/google_drive/helloworld
+- The correct response should be something like (this gets the metadata for your google drive):
+    {
+    "additionalRoleInfo": [
+        {
+            "roleSets": [
+                {
+                    "additionalRoles": [
+                        "commenter"
+                    ],
+                    "primaryRole": "reader"
+                }
+            ],
+            "type": "application/vnd.google-apps.drawing"
+        },
+        {
+            "roleSets": [
+                {
+                    "additionalRoles": [
+                        "commenter"
+                    ],
+                    "primaryRole": "reader"
+                }
+            ],
+            "type": "application/vnd.google-apps.document"
+        },
+        {
+            "roleSets": [
+                {
+                    "additionalRoles": [
+                        "commenter"
+                    ],
+                    "primaryRole": "reader"
+                }
+            ],
+            "type": "application/vnd.google-apps.presentation"
+        },
+        {
+            "roleSets": [
+                {
+                    "additionalRoles": [
+                        "commenter"
+                    ],
+                    "primaryRole": "reader"
+                }
+            ],
+            "type": "*"
+        },
+        {
+            "roleSets": [
+                {
+                    "additionalRoles": [
+                        "commenter"
+                    ],
+                    "primaryRole": "reader"
+                }
+            ],
+            "type": "application/vnd.google-apps.spreadsheet"
+        },
+        {
+            "roleSets": [],
+            "type": "application/vnd.google-apps.*"
+        }
+    ],
+    "domainSharingPolicy": "allowedWithWarning",
+    "etag": "\"tlWfk03TbBHKoqyGbIYE6wA918U/F4fORwPECwGSOraEh0zn2nXtufU\"",
+    "exportFormats": [
+        {
+            "source": "application/vnd.google-apps.drawing",
+            "targets": [
+                "image/svg+xml",
+                "image/jpeg",
+                "image/png",
+                "application/pdf"
+            ]
+        },
+        {
+            "source": "application/vnd.google-apps.presentation",
+            "targets": [
+                "application/pdf",
+                "text/plain",
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+            ]
+        },
+        {
+            "source": "application/vnd.google-apps.document",
+            "targets": [
+                "application/vnd.oasis.opendocument.text",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "application/rtf",
+                "text/html",
+                "application/pdf",
+                "text/plain"
+            ]
+        },
+        {
+            "source": "application/vnd.google-apps.spreadsheet",
+            "targets": [
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "application/x-vnd.oasis.opendocument.spreadsheet",
+                "text/csv",
+                "application/pdf"
+            ]
+        },
+        {
+            "source": "application/vnd.google-apps.form",
+            "targets": [
+                "application/zip"
+            ]
+        },
+        {
+            "source": "application/vnd.google-apps.script",
+            "targets": [
+                "application/vnd.google-apps.script+json"
+            ]
+        }
+    ],
+    "features": [
+        {
+            "featureName": "ocr"
+        },
+        {
+            "featureName": "translation",
+            "featureRate": 2
+        }
+    ],
+    "folderColorPalette": [
+        "#ac725e",
+        "#d06b64",
+        "#f83a22",
+        "#fa573c",
+        "#ff7537",
+        "#ffad46",
+        "#fad165",
+        "#fbe983",
+        "#b3dc6c",
+        "#7bd148",
+        "#16a765",
+        "#42d692",
+        "#92e1c0",
+        "#9fe1e7",
+        "#9fc6e7",
+        "#4986e7",
+        "#9a9cff",
+        "#b99aff",
+        "#a47ae2",
+        "#cd74e6",
+        "#f691b2",
+        "#cca6ac",
+        "#cabdbf",
+        "#8f8f8f"
+    ],
+    "importFormats": [
+        {
+            "source": "application/vnd.sun.xml.writer",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "image/pjpeg",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/vnd.ms-excel",
+            "targets": [
+                "application/vnd.google-apps.spreadsheet"
+            ]
+        },
+        {
+            "source": "text/csv",
+            "targets": [
+                "application/vnd.google-apps.spreadsheet"
+            ]
+        },
+        {
+            "source": "image/x-png",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/x-vnd.oasis.opendocument.text",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/vnd.openxmlformats-officedocument.presentationml.template",
+            "targets": [
+                "application/vnd.google-apps.presentation"
+            ]
+        },
+        {
+            "source": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "targets": [
+                "application/vnd.google-apps.presentation"
+            ]
+        },
+        {
+            "source": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "targets": [
+                "application/vnd.google-apps.spreadsheet"
+            ]
+        },
+        {
+            "source": "application/vnd.oasis.opendocument.presentation",
+            "targets": [
+                "application/vnd.google-apps.presentation"
+            ]
+        },
+        {
+            "source": "application/vnd.google-apps.script+json",
+            "targets": [
+                "application/vnd.google-apps.script"
+            ]
+        },
+        {
+            "source": "application/vnd.ms-powerpoint",
+            "targets": [
+                "application/vnd.google-apps.presentation"
+            ]
+        },
+        {
+            "source": "application/vnd.ms-powerpoint.template.macroEnabled.12",
+            "targets": [
+                "application/vnd.google-apps.presentation"
+            ]
+        },
+        {
+            "source": "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "image/png",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/vnd.oasis.opendocument.spreadsheet",
+            "targets": [
+                "application/vnd.google-apps.spreadsheet"
+            ]
+        },
+        {
+            "source": "application/vnd.ms-powerpoint.slideshow.macroEnabled.12",
+            "targets": [
+                "application/vnd.google-apps.presentation"
+            ]
+        },
+        {
+            "source": "text/rtf",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/vnd.ms-word.template.macroEnabled.12",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "image/gif",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/msword",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "text/html",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/vnd.oasis.opendocument.text",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+            "targets": [
+                "application/vnd.google-apps.spreadsheet"
+            ]
+        },
+        {
+            "source": "text/richtext",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/x-vnd.oasis.opendocument.spreadsheet",
+            "targets": [
+                "application/vnd.google-apps.spreadsheet"
+            ]
+        },
+        {
+            "source": "image/x-bmp",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "image/jpeg",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/vnd.ms-powerpoint.presentation.macroEnabled.12",
+            "targets": [
+                "application/vnd.google-apps.presentation"
+            ]
+        },
+        {
+            "source": "text/plain",
+            "targets": [
+                "application/vnd.google-apps.document",
+                "application/vnd.google-apps.spreadsheet"
+            ]
+        },
+        {
+            "source": "application/vnd.ms-word.document.macroEnabled.12",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "text/tab-separated-values",
+            "targets": [
+                "application/vnd.google-apps.spreadsheet"
+            ]
+        },
+        {
+            "source": "application/x-vnd.oasis.opendocument.presentation",
+            "targets": [
+                "application/vnd.google-apps.presentation"
+            ]
+        },
+        {
+            "source": "image/bmp",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/vnd.google-apps.script+text/plain",
+            "targets": [
+                "application/vnd.google-apps.script"
+            ]
+        },
+        {
+            "source": "image/jpg",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/json",
+            "targets": [
+                "application/vnd.google-apps.script"
+            ]
+        },
+        {
+            "source": "application/rtf",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+            "targets": [
+                "application/vnd.google-apps.presentation"
+            ]
+        },
+        {
+            "source": "application/pdf",
+            "targets": [
+                "application/vnd.google-apps.document"
+            ]
+        },
+        {
+            "source": "application/x-msmetafile",
+            "targets": [
+                "application/vnd.google-apps.drawing"
+            ]
+        },
+        {
+            "source": "application/vnd.ms-excel.template.macroEnabled.12",
+            "targets": [
+                "application/vnd.google-apps.spreadsheet"
+            ]
+        },
+        {
+            "source": "application/vnd.ms-excel.sheet.macroEnabled.12",
+            "targets": [
+                "application/vnd.google-apps.spreadsheet"
+            ]
+        }
+    ],
+    "isCurrentAppInstalled": false,
+    "kind": "drive#about",
+    "languageCode": "en-US",
+    "largestChangeId": "17293",
+    "maxUploadSizes": [
+        {
+            "size": "10485760",
+            "type": "application/vnd.google-apps.document"
+        },
+        {
+            "size": "104857600",
+            "type": "application/vnd.google-apps.spreadsheet"
+        },
+        {
+            "size": "104857600",
+            "type": "application/vnd.google-apps.presentation"
+        },
+        {
+            "size": "2097152",
+            "type": "application/vnd.google-apps.drawing"
+        },
+        {
+            "size": "5242880000000",
+            "type": "application/pdf"
+        },
+        {
+            "size": "5242880000000",
+            "type": "*"
+        }
+    ],
+    "name": "Paul Pogonoski",
+    "permissionId": "03308875192974461129",
+    "quotaBytesByService": [
+        {
+            "bytesUsed": "0",
+            "serviceName": "DRIVE"
+        },
+        {
+            "bytesUsed": "4620383988",
+            "serviceName": "GMAIL"
+        },
+        {
+            "bytesUsed": "0",
+            "serviceName": "PHOTOS"
+        }
+    ],
+    "quotaBytesTotal": "16106127360",
+    "quotaBytesUsed": "1145328",
+    "quotaBytesUsedAggregate": "4621529316",
+    "quotaBytesUsedInTrash": "0",
+    "quotaType": "LIMITED",
+    "rootFolderId": "0AAPqj8BjYBX-Uk9PVA",
+    "selfLink": "https://www.googleapis.com/drive/v2/about",
+    "user": {
+        "displayName": "Paul Pogonoski",
+        "emailAddress": "paulpog@japarasolutions.com",
+        "isAuthenticatedUser": true,
+        "kind": "drive#user",
+        "permissionId": "03308875192974461129",
+        "picture": {
+            "url": "https://lh5.googleusercontent.com/-09NG1fk2b-I/AAAAAAAAAAI/AAAAAAAAAD8/Oz8arKfe-AI/s64/photo.jpg"
+        }
+    }
+}
 
 ### Modify and Build
 In the event you need to change the API Hook.   Here are the instructions to do so. 
