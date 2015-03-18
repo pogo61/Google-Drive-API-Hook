@@ -34,6 +34,8 @@ API Hook that takes a string and inserts it to a new file created in a folder ca
 ### Getting Started Instructions
 #### Download and Import
 - Download GoogleDriveAPIHook.zip
+- Download the migrations.properties file, and edit it to replace the <replace this with your key> text with the "Container Key" of the ND or ND cluster in your target PM.
+    - the container key is found by going to the "Deatils Tab" of the ND cluster, or ND defined in the Policy Manager Console, then looking at the " Container Overview" tab on that page, and copying the "Container Key:" value. ![container key screenshot](https://github.com/pogo61/Google-Sheets-API-Integration/blob/master/Screen%20Shot%202015-03-18%20at%2011.24.45%20am.png "ND Container Key")
 - Login to PolicyManager  example: http://localhost:9900
 - Select the root "Registry" organisation and click on the "Import Package" from the Actions navigation window on the right side of the screen
   - click on button to browse for the GoogleDriveAPIHook.zip archive file 
