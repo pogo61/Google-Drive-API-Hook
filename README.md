@@ -1,4 +1,9 @@
-# Google-Drive-API-Hook
+# Akana API HOOK
+![Image of Akana] 
+(https://www.akana.com/img/formerlyLOGO8.png) 
+[Akana.com](http://akana.com)
+
+## Google-Drive-API-Hook
 API Hook that takes a string and inserts it to a new file created in a folder called "Leads" in Google Drive
 ## Google Drive API 
 ### About the API
