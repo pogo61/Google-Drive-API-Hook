@@ -555,6 +555,37 @@ API Hook that takes a string and inserts it to a new file created in a folder ca
     }
 }
 
+### How Hello World Works
+#### An Akana Integration Primer
+The Google_Drive_API_Hook API is a "Virtual Service". That is, its interface is not that of a real service implementation. It can be a proxy to a "real" implementation, or it can be an aggregate (a combination) of a number of "real" implementations. In Policy Manager a "real" implementation is called a "Physical Service".
+Apart from offering a different interface to the Physical Service, a Virtual Service offers the ability to attach Policies for security, logging, QoS, and a number of other non-functional capabilities.
+Virtual Services also have the ability to have Custom Process and Scripts run before the Physical Service is called. Here is where a lot of the magic of Integration occurs.
+
+#### Hello World
+To create the helloworld operation in the Google_Drive_API_Hook VS (Virtual Service) the Google Drive API RAML was copied and the following was added to the copied RAML to create the Google Sheets API Hook RAML:  
+    /helloworld:  
+      &nbsp;get:  
+        &nbsp;&nbsp;description: "returns all spreadsheets on your google drive"  
+        &nbsp;&nbsp;&nbsp;responses:  
+          &nbsp;&nbsp;&nbsp;&nbsp;200:  
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;body:  
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application/atom+xml:  
+
+Then a VS was created by using the RAML as the definition source.
+Then all the Operations in the VS were mapped to the same operations in the Google Drive API PS (Physical Service), except the "helloworld" operation, which is mapped to the GET /about operation.
+
+Go to the Google_Sheets_API_Hook VS -> Operations Tab -> GET /hellowworld operation -> Process tab you'll see this image:
+![Helloworld process] 
+(https://github.com/pogo61/Google-Drive-API-Hook/blob/master/Google%20Drive.png)
+
+Double click on the Script activity and the invoke activity to see how these work to make the Hello World operation call successful.
+
+
+### Create Your Own Integration with the Google Sheets API
+The Hello World operation is one simple way of integrating or extending your API's.
+Take a look at the [Google Sheets API Integration](https://github.com/pogo61/Google-Drive-API-Integration).
+this will give you a deeper inderstanding of the richness of our gateway product in integrating to API's
+
 ### Modify and Build
 In the event you need to change the API Hook.   Here are the instructions to do so. 
 
